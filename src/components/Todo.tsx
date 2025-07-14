@@ -1,16 +1,29 @@
-import {Button, Card, CardActions, CardHeader} from "@mui/material";
+import {Button, Card, CardActions, CardContent, CardHeader, Typography} from "@mui/material";
 import type {FC} from "react";
+import {useTodos} from "../hooks/useTodos.tsx";
+import type {TodoType} from "../providers/TodosProviders.tsx";
 
 type Props = {
-    title: string
+    todo: TodoType
 }
 
-const Todo: FC<Props> = ({title}) => {
+const Todo: FC<Props> = ({todo}) => {
+    const {deleteTodo} = useTodos()
+
+    const onRemoveClicked = () => {
+        deleteTodo(todo.id)
+    }
+
     return (
         <Card color={'primary'}>
-            <CardHeader title={title}/>
+            <CardHeader title={todo.title}/>
+            <CardContent>
+                <Typography variant={'subtitle1'}>
+                    {todo.content}
+                </Typography>
+            </CardContent>
             <CardActions style={{justifySelf: 'end'}}>
-                <Button>
+                <Button onClick={onRemoveClicked}>
                     Remove
                 </Button>
             </CardActions>
