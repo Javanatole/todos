@@ -5,6 +5,7 @@ import Todo from "./Todo.tsx";
 
 export const Todos: FC = () => {
     const {todos} = useTodos()
+
     return (
         <Stack direction={'column'} spacing={2}>
             {todos.map(todo => <Todo key={todo.id} todo={todo}/>)}
