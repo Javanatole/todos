@@ -4,13 +4,15 @@ from typing import List
 from fastapi import HTTPException
 from pydantic import BaseModel
 
-from todos.todo import TodoParams
-
-
 class Priority(str, Enum):
     HIGH = "HIGH"
     MEDIUM = "MEDIUM"
     LOW = "LOW"
+
+class TodoParams(BaseModel):
+    title: str
+    content: str
+    priority: Priority
 
 class Todo(BaseModel):
     id: int
@@ -35,9 +37,18 @@ class TodosDB:
         compute new id
         :return: new id available
         """
+        if len(self._todos_db) == 0:
+            return 0
+        # return 0 if no todos are in the list
+        # otherwise the maximum of id
         return max(self._todos_db, key=lambda todo: todo.id).id + 1
 
     def get_todos(self, priority: Priority | None = None) -> List[Todo]:
+        """
+        get list of todos
+        :param priority: filter todos by priority
+        :return: list od filtered priority
+        """
         if priority is None:
             return self._todos_db
         return list(filter(lambda todo: todo.priority is priority, self._todos_db))

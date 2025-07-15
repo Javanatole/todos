@@ -1,14 +1,14 @@
 import {Button, Card, CardActions, CardContent, CardHeader, Typography} from "@mui/material";
 import type {FC} from "react";
-import {useTodos} from "../hooks/useTodos.tsx";
 import type {TodoType} from "../providers/TodosProviders.tsx";
+import {useDeleteTodoMutation} from "../services/todos.ts";
 
 type Props = {
     todo: TodoType
 }
 
 const Todo: FC<Props> = ({todo}) => {
-    const {deleteTodo} = useTodos()
+    const [deleteTodo, {isLoading}] = useDeleteTodoMutation()
 
     const onRemoveClicked = () => {
         deleteTodo(todo.id)
@@ -23,8 +23,8 @@ const Todo: FC<Props> = ({todo}) => {
                 </Typography>
             </CardContent>
             <CardActions style={{justifySelf: 'end'}}>
-                <Button onClick={onRemoveClicked}>
-                    Remove
+                <Button onClick={onRemoveClicked} loading={isLoading}>
+                    {isLoading ? 'is removing' : 'Remove'}
                 </Button>
             </CardActions>
         </Card>

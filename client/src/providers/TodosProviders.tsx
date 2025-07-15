@@ -9,7 +9,6 @@ export type TodoType = {
 export type TodosContextType = {
     todos: TodoType[],
     addTodo: (title: string, content: string) => void,
-    deleteTodo: (index: number) => void
 }
 
 const defaultValue: TodosContextType = {
@@ -17,9 +16,6 @@ const defaultValue: TodosContextType = {
     addTodo: (content: string) => {
         console.log('add todo ', content);
     },
-    deleteTodo: (index: number) => {
-        console.log('delete todo with index = ', index)
-    }
 
 }
 
@@ -36,12 +32,8 @@ const TodosProviders: FC<PropsWithChildren> = ({children}) => {
         }])
     }
 
-    const deleteTodo = (id: number): void => {
-        setTodos(todos.filter(todo => todo.id !== id))
-    }
-
     return (
-        <TodosContext value={{todos, addTodo, deleteTodo}}>
+        <TodosContext value={{todos, addTodo}}>
             {children}
         </TodosContext>
     )

@@ -1,6 +1,6 @@
 import {type TodosContextType} from "../providers/TodosProviders.tsx";
 import {useDispatch} from "react-redux";
-import {addTodo, deleteTodo} from "../features/todos/todosSlice.ts";
+import {addTodo} from "../features/todos/todosSlice.ts";
 import {useAppSelector} from "./hooks.ts";
 
 export const useTodos = (): TodosContextType => {
@@ -14,13 +14,8 @@ export const useTodos = (): TodosContextType => {
         }))
     }
 
-    const dispatchDeleteTodo = (index: number) => {
-        dispatch(deleteTodo(index))
-    }
-
     return {
         todos,
         addTodo: dispatchAddTodo,
-        deleteTodo: dispatchDeleteTodo
     }
 }

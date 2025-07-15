@@ -3,10 +3,24 @@ from typing import List, Optional
 from fastapi import FastAPI
 from fastapi.params import Query
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
-from todos.todos import Todo, Priority, TodosDB
+from todos.todos import Todo, Priority, TodosDB, TodoParams
 
 app = FastAPI()
+
+origins = [
+    "http://127.0.0.1:5173",
+    "http://localhost:5173",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class TodosType(BaseModel):
     todos: List[Todo]
@@ -30,11 +44,6 @@ async def get_todo(todo_id: int):
     """
     return todos_db.get_todo(todo_id)
 
-class TodoParams(BaseModel):
-    title: str
-    content: str
-    priority: Priority
-
 @app.post("/todos", response_model=Todo)
 async def create_todo(todo_params: TodoParams):
     return todos_db.add_todo(
@@ -44,9 +53,9 @@ async def create_todo(todo_params: TodoParams):
     )
 
 
-@app.delete("/todos")
-async def delete_todo(id_to_delete: int):
-    todos_db.delete_todo(id_to_delete)
+@app.delete("/todos/{todo_id}")
+async def delete_todo(todo_id: int):
+    todos_db.delete_todo(todo_id)
 
 @app.put("/todos/{todo_id}")
 async def update_todo(todo_id: int, todo: TodoParams):

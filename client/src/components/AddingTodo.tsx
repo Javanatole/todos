@@ -1,12 +1,13 @@
 import {Button, Stack, TextField} from "@mui/material";
 import {type FC, type FormEvent, useState} from "react";
-import {useTodos} from "../hooks/useTodos.tsx";
 import {useControlledTextField} from "../hooks/useControlledTextField.ts";
+import {useAddTodoMutation} from "../services/todos.ts";
 
 export const AddingTodo: FC = () => {
     const [title, onChangeTitle, onResetTitle] = useControlledTextField()
     const [content, onChangeContent, onResetContent] = useControlledTextField()
-    const {addTodo} = useTodos()
+
+    const [addTodo, {isLoading}] = useAddTodoMutation()
 
     const [showErrors, setShowErrors] = useState(false)
     const isValid = title.trim() !== '' && content.trim() !== ''
@@ -19,7 +20,11 @@ export const AddingTodo: FC = () => {
             setShowErrors(true)
             return
         }
-        addTodo(title.trim(), content.trim())
+        addTodo({
+            title: title.trim(),
+            content: content.trim(),
+            priority: 'HIGH'
+        })
         onResetTitle()
         onResetContent()
         setShowErrors(false)
@@ -51,7 +56,13 @@ export const AddingTodo: FC = () => {
                 error={showErrors && content.trim() === ''}
                 helperText={showErrors && content.trim() === '' ? 'Content is needed' : ''}
             />
-            <Button type={'submit'} size={'large'} variant={'contained'} fullWidth={true}>
+            <Button
+                size={'large'}
+                variant={'contained'}
+                fullWidth={true}
+                loading={isLoading}
+                type={'submit'}
+            >
                 Add
             </Button>
         </Stack>

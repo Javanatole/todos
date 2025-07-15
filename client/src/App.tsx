@@ -5,7 +5,7 @@ import {TodosProviders} from "./providers/TodosProviders.tsx";
 
 function App() {
     return (
-        <Stack paddingX={50} direction={'column'} spacing={2}>
+        <Stack paddingX={'20%'} direction={'column'} spacing={2}>
             <Typography textAlign={'center'} variant={'h1'}>TODOS</Typography>
             <TodosProviders>
                 <AddingTodo/>

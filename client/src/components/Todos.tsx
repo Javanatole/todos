@@ -1,14 +1,20 @@
 import type {FC} from "react";
-import {Stack} from "@mui/material";
-import {useTodos} from "../hooks/useTodos.tsx";
+import {CircularProgress, Stack} from "@mui/material";
 import Todo from "./Todo.tsx";
+import {useGetTodosQuery} from "../services/todos.ts";
 
 export const Todos: FC = () => {
-    const {todos} = useTodos()
+    const {data, isLoading} = useGetTodosQuery(undefined)
+
+    if (isLoading) {
+        return (
+            <CircularProgress />
+        )
+    }
 
     return (
         <Stack direction={'column'} spacing={2}>
-            {todos.map(todo => <Todo key={todo.id} todo={todo}/>)}
+            {data?.todos?.map(todo => <Todo key={todo.id} todo={todo}/>)}
         </Stack>
     )
 }
