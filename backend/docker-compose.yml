@@ -1,0 +1,9 @@
+services:
+  backend:
+    build:
+      context: .
+    image: backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - "${PWD}/todos:/app/todos"
