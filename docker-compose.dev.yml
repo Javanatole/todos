@@ -20,7 +20,7 @@ services:
       dockerfile: Dockerfile.dev
     image: backend:1.0.0
     volumes:
-      - "${PWD}/backend/todos:/app/todos"
+      - "./backend/todos:/app/todos"
     networks:
       - internal
 
@@ -29,7 +29,7 @@ services:
     working_dir: /app
     command: "npm run dev -- --host"
     volumes:
-      - "${PWD}/client:/app"
+      - "./client:/app"
     networks:
       - internal
 
