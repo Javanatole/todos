@@ -10,8 +10,8 @@ from todos.todos import Todo, Priority, TodosDB, TodoParams
 app = FastAPI()
 
 origins = [
-    "http://127.0.0.1:5173",
-    "http://localhost:5173",
+    "http://localhost",
+    "http://127.0.0.1",
 ]
 
 app.add_middleware(

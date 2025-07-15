@@ -2,7 +2,7 @@ FROM python:3.13
 LABEL authors="anatole"
 
 WORKDIR /app
-COPY . .
+COPY pyproject.toml .
 RUN pip install -e .
 
 ENTRYPOINT ["fastapi"]

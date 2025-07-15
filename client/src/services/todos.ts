@@ -3,7 +3,7 @@ import type {Priority, Todo, TodoPayload, Todos} from "../types/todo.ts";
 
 export const todosApi = createApi({
     reducerPath: 'todosApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://127.0.0.1:8000/'}),
+    baseQuery: fetchBaseQuery({ baseUrl: 'http://127.0.0.1/api'}),
     tagTypes: ['Todo'],
     endpoints: (builder) => ({
         getTodos: builder.query<Todos,  Priority | undefined>({
