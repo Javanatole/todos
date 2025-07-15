@@ -10,6 +10,8 @@ from todos.todos import Todo, Priority, TodosDB, TodoParams
 app = FastAPI()
 
 origins = [
+    "http://127.0.0.1:5173",
+    "http://localhost:5173",
     "http://localhost",
     "http://127.0.0.1",
 ]
@@ -27,7 +29,7 @@ class TodosType(BaseModel):
 
 todos_db = TodosDB()
 
-@app.get("/todos", response_model=TodosType)
+@app.get("/todos_tottot", response_model=TodosType)
 async def todos(priority: Optional[Priority] = Query(default=None, description="Field used for filtering the priority")):
     """
     Return filtered todos

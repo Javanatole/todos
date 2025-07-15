@@ -1,0 +1,38 @@
+services:
+  nginx:
+    image: nginx:1.26.0-alpine
+    container_name: nginx_container
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      backend:
+        condition: service_started
+      client:
+        condition: service_started
+    networks:
+      - internal
+  
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile.dev
+    image: backend:1.0.0
+    volumes:
+      - "${PWD}/backend/todos:/app/todos"
+    networks:
+      - internal
+
+  client:
+    image: node:20.19.3
+    working_dir: /app
+    command: "npm run dev -- --host"
+    volumes:
+      - "${PWD}/client:/app"
+    networks:
+      - internal
+
+networks:
+  internal:
+    driver: bridge
