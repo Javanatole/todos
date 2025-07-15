@@ -18,7 +18,7 @@ services:
     build:
       context: backend
       dockerfile: Dockerfile.dev
-    image: backend:1.0.0
+    image: backend-dev:1.0.0
     volumes:
       - "${PWD}/backend/todos:/app/todos"
     networks:
@@ -27,7 +27,7 @@ services:
   client:
     image: node:20.19.3
     working_dir: /app
-    command: "npm run dev -- --host"
+    command: sh -c "npm install && npm run dev -- --host"
     volumes:
       - "${PWD}/client:/app"
     networks:
