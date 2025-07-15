@@ -42,3 +42,12 @@ async def create_todo(todo_params: TodoParams):
         todo_params.content,
         todo_params.priority
     )
+
+
+@app.delete("/todos")
+async def delete_todo(id_to_delete: int):
+    todos_db.delete_todo(id_to_delete)
+
+@app.put("/todos/{todo_id}")
+async def update_todo(todo_id: int, todo: TodoParams):
+    todos_db.update_todo(todo_id, todo)

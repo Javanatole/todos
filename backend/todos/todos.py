@@ -4,6 +4,9 @@ from typing import List
 from fastapi import HTTPException
 from pydantic import BaseModel
 
+from todos.todo import TodoParams
+
+
 class Priority(str, Enum):
     HIGH = "HIGH"
     MEDIUM = "MEDIUM"
@@ -40,6 +43,11 @@ class TodosDB:
         return list(filter(lambda todo: todo.priority is priority, self._todos_db))
 
     def get_todo(self, id_to_search: int):
+        """
+        get todo
+        :param id_to_search:
+        :return:
+        """
         todo = next((t for t in self._todos_db if t.id == id_to_search), None)
         if todo is None:
             raise HTTPException(status_code=404)
@@ -47,6 +55,13 @@ class TodosDB:
 
 
     def add_todo(self, title: str, content: str, priority: Priority) -> Todo:
+        """
+        Add Todo
+        :param title: title of the todo
+        :param content: content of the todo
+        :param priority: priority of the todo
+        :return: the new todo created by python
+        """
         new_todo = Todo(
             id=self._get_new_id(),
             title=title,
@@ -56,3 +71,29 @@ class TodosDB:
         )
         self._todos_db.append(new_todo)
         return new_todo
+
+    def delete_todo(self, id_to_delete: int):
+        """
+        Delete specific todo
+        :param id_to_delete:
+        :return:
+        """
+        index_to_delete = self._todos_db.index(self.get_todo(id_to_delete))
+        del self._todos_db[index_to_delete]
+
+    def update_todo(self, id_to_update, todo: TodoParams):
+        """
+        Update todo
+        :param id_to_update: id of todo to replace
+        :param todo: component of new todo
+        :return:
+        """
+        index_to_update = self._todos_db.index(self.get_todo(id_to_update))
+        todo_replacement = Todo(
+            id=self._todos_db[index_to_update].id,
+            title=todo.title,
+            content=todo.content,
+            priority=todo.priority,
+        )
+        self._todos_db[index_to_update] = todo_replacement
+        return todo_replacement
