@@ -1,11 +1,14 @@
-import {Button, Stack, TextField} from "@mui/material";
+import {Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField} from "@mui/material";
 import {type FC, type FormEvent, useState} from "react";
 import {useControlledTextField} from "../hooks/useControlledTextField.ts";
 import {useAddTodoMutation} from "../services/todos.ts";
+import {PriorityEnum} from "../types/todo.ts";
+import {useControlledSelectField} from "../hooks/useControlledSelectField.ts";
 
 export const AddingTodo: FC = () => {
     const [title, onChangeTitle, onResetTitle] = useControlledTextField()
     const [content, onChangeContent, onResetContent] = useControlledTextField()
+    const [priority, onChangePriority, onResetPriority] = useControlledSelectField(PriorityEnum.HIGH)
 
     const [addTodo, {isLoading}] = useAddTodoMutation()
 
@@ -23,10 +26,11 @@ export const AddingTodo: FC = () => {
         addTodo({
             title: title.trim(),
             content: content.trim(),
-            priority: 'HIGH'
+            priority: priority
         })
         onResetTitle()
         onResetContent()
+        onResetPriority()
         setShowErrors(false)
     }
 
@@ -56,6 +60,23 @@ export const AddingTodo: FC = () => {
                 error={showErrors && content.trim() === ''}
                 helperText={showErrors && content.trim() === '' ? 'Content is needed' : ''}
             />
+            <FormControl fullWidth={true}>
+                <InputLabel id={'priority'}>Priority</InputLabel>
+                <Select
+                    id={'priority'}
+                    label="Priority"
+                    variant="outlined"
+                    fullWidth={true}
+                    onChange={onChangePriority}
+                    value={priority}
+                >
+                    {
+                        Object.entries(PriorityEnum).map(entry => (
+                            <MenuItem value={entry[0]}>{entry[1]}</MenuItem>
+                        ))
+                    }
+                </Select>
+            </FormControl>
             <Button
                 size={'large'}
                 variant={'contained'}
