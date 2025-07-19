@@ -2,7 +2,7 @@ import {Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField} fro
 import {type FC, type FormEvent, useState} from "react";
 import {useControlledTextField} from "../hooks/useControlledTextField.ts";
 import {useAddTodoMutation} from "../services/todos.ts";
-import {PriorityEnum} from "../types/todo.ts";
+import {PriorityEnum} from "../types/todoResult.ts";
 import {useControlledSelectField} from "../hooks/useControlledSelectField.ts";
 
 export const AddingTodo: FC = () => {

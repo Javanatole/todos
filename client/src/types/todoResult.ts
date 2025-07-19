@@ -12,11 +12,11 @@ export type TodoPayload = {
     priority: Priority
 }
 
-export type Todo = TodoPayload & {
+export type TodoResult = TodoPayload & {
     id: number,
     isDone: boolean,
 }
 
 export type Todos = {
-    todos: Todo[]
+    todos: TodoResult[]
 }

@@ -1,13 +1,14 @@
 import {Button, Card, CardActions, CardContent, CardHeader, Typography} from "@mui/material";
 import type {FC} from "react";
-import type {TodoType} from "../providers/TodosProviders.tsx";
 import {useDeleteTodoMutation} from "../services/todos.ts";
+import {TodoTitleHeader} from "./TodoTitleHeader.tsx";
+import type {TodoResult} from "../types/todoResult.ts";
 
 type Props = {
-    todo: TodoType
+    todo: TodoResult
 }
 
-const Todo: FC<Props> = ({todo}) => {
+export const Todo: FC<Props> = ({todo}) => {
     const [deleteTodo, {isLoading}] = useDeleteTodoMutation()
 
     const onRemoveClicked = () => {
@@ -16,7 +17,7 @@ const Todo: FC<Props> = ({todo}) => {
 
     return (
         <Card color={'primary'}>
-            <CardHeader title={todo.title}/>
+            <CardHeader title={<TodoTitleHeader todo={todo} />} />
             <CardContent>
                 <Typography variant={'subtitle1'}>
                     {todo.content}
@@ -30,5 +31,3 @@ const Todo: FC<Props> = ({todo}) => {
         </Card>
     )
 }
-
-export default Todo;

@@ -1,12 +1,12 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import type {PriorityEnum, Todo, TodoPayload, Todos} from "../types/todo.ts";
+import type {Priority, TodoResult, TodoPayload, Todos} from "../types/todoResult.ts";
 
 export const todosApi = createApi({
     reducerPath: 'todosApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'http://127.0.0.1/api'}),
     tagTypes: ['Todo'],
     endpoints: (builder) => ({
-        getTodos: builder.query<Todos,  PriorityEnum | undefined>({
+        getTodos: builder.query<Todos,  Priority | undefined>({
             query: (priority) => {
                 const queryString = priority ? `?priority=${priority}` : '';
                 return `todos${queryString}`;
@@ -20,7 +20,7 @@ export const todosApi = createApi({
             }),
             invalidatesTags: ['Todo']
         }),
-        addTodo: builder.mutation<Todo, TodoPayload>({
+        addTodo: builder.mutation<TodoResult, TodoPayload>({
             query: (payload) => ({
                 url: `todos`,
                 method: 'POST',
