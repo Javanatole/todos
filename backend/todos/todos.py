@@ -2,19 +2,34 @@ from enum import Enum
 from typing import List
 
 from fastapi import HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
+from pydantic.alias_generators import to_camel
+
 
 class Priority(str, Enum):
     HIGH = "HIGH"
     MEDIUM = "MEDIUM"
     LOW = "LOW"
 
-class TodoParams(BaseModel):
+
+class CamelModel(BaseModel):
+    model_config = ConfigDict(
+        alias_generator=to_camel,
+        populate_by_name=True,
+    )
+
+class TodoParams(CamelModel):
     title: str
     content: str
     priority: Priority
 
-class Todo(BaseModel):
+class TodoUpdateParams(CamelModel):
+    title: str
+    content: str
+    priority: Priority
+    is_done: bool
+
+class Todo(CamelModel):
     id: int
     title: str
     content: str
@@ -92,7 +107,7 @@ class TodosDB:
         index_to_delete = self._todos_db.index(self.get_todo(id_to_delete))
         del self._todos_db[index_to_delete]
 
-    def update_todo(self, id_to_update, todo: TodoParams):
+    def update_todo(self, id_to_update, todo: TodoUpdateParams):
         """
         Update todo
         :param id_to_update: id of todo to replace
@@ -105,6 +120,7 @@ class TodosDB:
             title=todo.title,
             content=todo.content,
             priority=todo.priority,
+            is_done=todo.is_done
         )
         self._todos_db[index_to_update] = todo_replacement
         return todo_replacement

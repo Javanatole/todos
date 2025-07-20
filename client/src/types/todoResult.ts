@@ -12,6 +12,10 @@ export type TodoPayload = {
     priority: Priority
 }
 
+export type TodoUpdatePayload = TodoPayload & {
+    isDone: boolean
+}
+
 export type TodoResult = TodoPayload & {
     id: number,
     isDone: boolean,
