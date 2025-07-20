@@ -1,5 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import type {Priority, Todo, TodoPayload, Todos} from "../types/todo.ts";
+import type {Priority, TodoResult, TodoPayload, Todos, TodoUpdatePayload} from "../types/todoResult.ts";
 
 export const todosApi = createApi({
     reducerPath: 'todosApi',
@@ -20,10 +20,18 @@ export const todosApi = createApi({
             }),
             invalidatesTags: ['Todo']
         }),
-        addTodo: builder.mutation<Todo, TodoPayload>({
+        addTodo: builder.mutation<TodoResult, TodoPayload>({
             query: (payload) => ({
                 url: `todos`,
                 method: 'POST',
+                body: payload
+            }),
+            invalidatesTags: ['Todo']
+        }),
+        updateTodo: builder.mutation<void, {id: number, payload: TodoUpdatePayload}>({
+            query: ({id, payload}) => ({
+                url: `todos/${id}`,
+                method: 'PUT',
                 body: payload
             }),
             invalidatesTags: ['Todo']
@@ -31,4 +39,4 @@ export const todosApi = createApi({
     })
 })
 
-export const { useGetTodosQuery, useDeleteTodoMutation, useAddTodoMutation } = todosApi;
+export const { useGetTodosQuery, useDeleteTodoMutation, useAddTodoMutation, useUpdateTodoMutation } = todosApi;

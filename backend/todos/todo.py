@@ -5,7 +5,7 @@ from fastapi.params import Query
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 
-from todos.todos import Todo, Priority, TodosDB, TodoParams
+from todos.todos import Todo, Priority, TodosDB, TodoParams, TodoUpdateParams
 
 app = FastAPI()
 
@@ -60,5 +60,5 @@ async def delete_todo(todo_id: int):
     todos_db.delete_todo(todo_id)
 
 @app.put("/todos/{todo_id}")
-async def update_todo(todo_id: int, todo: TodoParams):
+async def update_todo(todo_id: int, todo: TodoUpdateParams):
     todos_db.update_todo(todo_id, todo)

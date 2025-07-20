@@ -1,7 +1,7 @@
 import type {FC} from "react";
 import {CircularProgress, Stack} from "@mui/material";
-import Todo from "./Todo.tsx";
 import {useGetTodosQuery} from "../services/todos.ts";
+import {Todo} from "./Todo.tsx";
 
 export const Todos: FC = () => {
     const {data, isLoading} = useGetTodosQuery(undefined)
