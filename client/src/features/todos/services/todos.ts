@@ -1,12 +1,12 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import type {Priority, TodoResult, TodoPayload, Todos, TodoUpdatePayload} from "../types/todoResult.ts";
+import type {Priority, TodoResult, TodoPayload, TodoUpdatePayload} from "../types/todoResult.ts";
 
 export const todosApi = createApi({
     reducerPath: 'todosApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'http://127.0.0.1/api'}),
     tagTypes: ['Todo'],
     endpoints: (builder) => ({
-        getTodos: builder.query<Todos,  Priority | undefined>({
+        getTodos: builder.query<TodoResult[],  Priority | undefined>({
             query: (priority) => {
                 const queryString = priority ? `?priority=${priority}` : '';
                 return `todos${queryString}`;

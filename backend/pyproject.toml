@@ -4,5 +4,7 @@ version = "1.0.0"
 requires-python = "<4.0,>=3.11"
 
 dependencies = [
-    "fastapi[standard]"
+    "fastapi[standard]",
+    "sqlalchemy",
+    "asyncpg"
 ]
