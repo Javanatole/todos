@@ -1,6 +1,6 @@
 import {Stack, Typography} from "@mui/material";
-import AddTodoForm from "./features/todos/components/AddTodoForm.tsx";
-import {Todos} from "./features/todos/components/Todos.tsx";
+import AddTodoForm from "./features/todos/components/containers/AddTodoForm.tsx";
+import {TodosList} from "./features/todos/components/containers/TodosList.tsx";
 
 function App() {
     return (
@@ -8,7 +8,7 @@ function App() {
             <Typography textAlign={'center'} variant={'h1'}>TODOS</Typography>
             <AddTodoForm/>
             <hr/>
-            <Todos/>
+            <TodosList/>
         </Stack>
     )
 }

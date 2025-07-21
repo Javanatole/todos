@@ -1,6 +1,6 @@
 import {type FC} from "react";
-import {useAddTodoMutation} from "../services/todos.ts";
-import {TodoForm} from "./TodoForm.tsx";
+import {useAddTodoMutation} from "../../services/todos.ts";
+import {TodoForm} from "../ui/TodoForm.tsx";
 
 const AddTodoForm: FC = () => {
     const [addTodo, {isLoading}] = useAddTodoMutation()

@@ -1,8 +1,8 @@
 import {type FC, type FormEvent, useState} from "react";
 import {Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField} from "@mui/material";
-import {PriorityEnum, type TodoPayload} from "../types/todoResult.ts";
-import {useControlledTextField} from "../hooks/useControlledTextField.ts";
-import {useControlledSelectField} from "../hooks/useControlledSelectField.ts";
+import {PriorityEnum, type TodoPayload} from "../../types/todoResult.ts";
+import {useControlledTextField} from "../../hooks/useControlledTextField.ts";
+import {useControlledSelectField} from "../../hooks/useControlledSelectField.ts";
 
 type Props = {
     titleAction: string

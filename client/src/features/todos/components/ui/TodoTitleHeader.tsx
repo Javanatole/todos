@@ -5,7 +5,7 @@ import {
     Typography
 } from "@mui/material";
 import type {FC} from "react";
-import {type Priority, PriorityEnum, type TodoResult} from "../types/todoResult.ts";
+import {type Priority, PriorityEnum, type TodoResult} from "../../types/todoResult.ts";
 
 type Props = {
     todo: TodoResult

@@ -1,9 +1,9 @@
 import type {FC} from "react";
 import {CircularProgress, Stack} from "@mui/material";
-import {useGetTodosQuery} from "../services/todos.ts";
-import {Todo} from "./Todo.tsx";
+import {useGetTodosQuery} from "../../services/todos.ts";
+import {TodoItem} from "../ui/TodoItem.tsx";
 
-export const Todos: FC = () => {
+export const TodosList: FC = () => {
     const {data, isLoading} = useGetTodosQuery(undefined)
 
     if (isLoading) {
@@ -14,7 +14,7 @@ export const Todos: FC = () => {
 
     return (
         <Stack direction={'column'} spacing={2}>
-            {data?.todos?.map(todo => <Todo key={todo.id} todo={todo}/>)}
+            {data?.todos?.map(todo => <TodoItem key={todo.id} todo={todo}/>)}
         </Stack>
     )
 }
