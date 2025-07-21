@@ -1,11 +1,11 @@
-from typing import List, Optional
-
-from fastapi import FastAPI
-from fastapi.params import Query
-from pydantic import BaseModel
+from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.ext.asyncio import AsyncSession
+from typing import List, Optional
+from contextlib import asynccontextmanager
 
-from todos.todos import Todo, Priority, TodosDB, TodoParams, TodoUpdateParams
+from .database import AsyncSessionLocal, engine
+from . import models, schemas, crud
 
 app = FastAPI()
 
@@ -24,41 +24,35 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class TodosType(BaseModel):
-    todos: List[Todo]
+async def get_db():
+    db = AsyncSessionLocal()
+    try:
+        yield db
+    finally:
+        await db.close()
 
-todos_db = TodosDB()
+@app.on_event("startup")
+async def startup():
+    async with engine.begin() as conn:
+        await conn.run_sync(models.Base.metadata.create_all)
 
-@app.get("/todos", response_model=TodosType)
-async def todos(priority: Optional[Priority] = Query(default=None, description="Field used for filtering the priority")):
-    """
-    Return filtered todos
-    :param priority: filter with priority
-    :return: list of todos
-    """
-    return {'todos': todos_db.get_todos(priority)}
+@app.get("/todos", response_model=List[schemas.TodoOut])
+async def read_todos(priority: Optional[str] = None, db: AsyncSession = Depends(get_db)):
+    return await crud.get_todos(db, priority)
 
-@app.get("/todos/{todo_id}", response_model=Todo)
-async def get_todo(todo_id: int):
-    """
-    Return one Todo that matches *todo_id*.
-    Raises 404 if it doesn’t exist.
-    """
-    return todos_db.get_todo(todo_id)
+@app.get("/todos/{todo_id}", response_model=schemas.TodoOut)
+async def read_todo(todo_id: int, db: AsyncSession = Depends(get_db)):
+    return await crud.get_todo(db, todo_id)
 
-@app.post("/todos", response_model=Todo)
-async def create_todo(todo_params: TodoParams):
-    return todos_db.add_todo(
-        todo_params.title,
-        todo_params.content,
-        todo_params.priority
-    )
-
+@app.post("/todos", response_model=schemas.TodoOut)
+async def create_todo(todo: schemas.TodoCreate, db: AsyncSession = Depends(get_db)):
+    return await crud.create_todo(db, todo)
 
 @app.delete("/todos/{todo_id}")
-async def delete_todo(todo_id: int):
-    todos_db.delete_todo(todo_id)
+async def delete_todo(todo_id: int, db: AsyncSession = Depends(get_db)):
+    await crud.delete_todo(db, todo_id)
+    return {"ok": True}
 
-@app.put("/todos/{todo_id}")
-async def update_todo(todo_id: int, todo: TodoUpdateParams):
-    todos_db.update_todo(todo_id, todo)
+@app.put("/todos/{todo_id}", response_model=schemas.TodoOut)
+async def update_todo(todo_id: int, todo: schemas.TodoUpdate, db: AsyncSession = Depends(get_db)):
+    return await crud.update_todo(db, todo_id, todo)
