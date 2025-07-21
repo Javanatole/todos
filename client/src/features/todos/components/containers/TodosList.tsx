@@ -14,7 +14,7 @@ export const TodosList: FC = () => {
 
     return (
         <Stack direction={'column'} spacing={2}>
-            {data?.todos?.map(todo => <TodoItem key={todo.id} todo={todo}/>)}
+            {data?.map(todo => <TodoItem key={todo.id} todo={todo}/>)}
         </Stack>
     )
 }
