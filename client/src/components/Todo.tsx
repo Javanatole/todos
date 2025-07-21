@@ -1,8 +1,9 @@
 import {Button, Card, CardActions, CardContent, CardHeader, Typography} from "@mui/material";
 import type {FC} from "react";
-import {useDeleteTodoMutation, useUpdateTodoMutation} from "../services/todos.ts";
+import {useDeleteTodoMutation} from "../services/todos.ts";
 import {TodoTitleHeader} from "./TodoTitleHeader.tsx";
 import type {TodoResult} from "../types/todoResult.ts";
+import {UpdateTodoButton} from "./UpdateTodoButton.tsx";
 
 type Props = {
     todo: TodoResult
@@ -10,22 +11,9 @@ type Props = {
 
 export const Todo: FC<Props> = ({todo}) => {
     const [deleteTodo, {isLoading: isLoadingDelete}] = useDeleteTodoMutation()
-    const [updateTodo, {isLoading: isLoadingUpdate}] = useUpdateTodoMutation()
 
     const onRemoveClicked = () => {
         deleteTodo(todo.id)
-    }
-
-    const onUpdateClicked = () => {
-        updateTodo({
-            id: todo.id,
-            payload: {
-                title: 'Test 222',
-                content: todo.content,
-                priority: todo.priority,
-                isDone: false
-            }
-        })
     }
 
     return (
@@ -37,9 +25,7 @@ export const Todo: FC<Props> = ({todo}) => {
                 </Typography>
             </CardContent>
             <CardActions style={{justifySelf: 'end'}}>
-                <Button onClick={onUpdateClicked} loading={isLoadingUpdate}>
-                    {isLoadingUpdate ? 'is updating' : 'Update'}
-                </Button>
+                <UpdateTodoButton todo={todo} />
                 <Button onClick={onRemoveClicked} loading={isLoadingDelete}>
                     {isLoadingDelete ? 'is removing' : 'Remove'}
                 </Button>
