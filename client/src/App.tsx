@@ -1,6 +1,6 @@
 import {Stack, Typography} from "@mui/material";
-import AddTodoForm from "./components/AddTodoForm.tsx";
-import {Todos} from "./components/Todos.tsx";
+import AddTodoForm from "./features/todos/components/AddTodoForm.tsx";
+import {Todos} from "./features/todos/components/Todos.tsx";
 
 function App() {
     return (
