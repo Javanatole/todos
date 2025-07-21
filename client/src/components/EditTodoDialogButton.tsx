@@ -9,7 +9,7 @@ type Props = {
     todo: TodoResult
 }
 
-export const UpdateTodoButton: FC<Props> = ({todo}) => {
+export const EditTodoDialogButton: FC<Props> = ({todo}) => {
     const [open, toggle] = useToggle()
     const [updateTodo, {isLoading: isLoadingUpdate}] = useUpdateTodoMutation()
 

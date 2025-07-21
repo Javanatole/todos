@@ -3,7 +3,7 @@ import type {FC} from "react";
 import {useDeleteTodoMutation} from "../services/todos.ts";
 import {TodoTitleHeader} from "./TodoTitleHeader.tsx";
 import type {TodoResult} from "../types/todoResult.ts";
-import {UpdateTodoButton} from "./UpdateTodoButton.tsx";
+import {EditTodoDialogButton} from "./EditTodoDialogButton.tsx";
 
 type Props = {
     todo: TodoResult
@@ -25,7 +25,7 @@ export const Todo: FC<Props> = ({todo}) => {
                 </Typography>
             </CardContent>
             <CardActions style={{justifySelf: 'end'}}>
-                <UpdateTodoButton todo={todo} />
+                <EditTodoDialogButton todo={todo} />
                 <Button onClick={onRemoveClicked} loading={isLoadingDelete}>
                     {isLoadingDelete ? 'is removing' : 'Remove'}
                 </Button>

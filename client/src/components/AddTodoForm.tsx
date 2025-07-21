@@ -2,7 +2,7 @@ import {type FC} from "react";
 import {useAddTodoMutation} from "../services/todos.ts";
 import {TodoForm} from "./TodoForm.tsx";
 
-export const AddingTodo: FC = () => {
+const AddTodoForm: FC = () => {
     const [addTodo, {isLoading}] = useAddTodoMutation()
 
     return (
@@ -14,4 +14,4 @@ export const AddingTodo: FC = () => {
     )
 }
 
-export default AddingTodo;
+export default AddTodoForm;
