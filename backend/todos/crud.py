@@ -1,6 +1,6 @@
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from .models import Todo, PriorityEnum
+from .models import Todo
 from .schemas import TodoCreate, TodoUpdate
 from typing import List, Optional
 from fastapi import HTTPException
