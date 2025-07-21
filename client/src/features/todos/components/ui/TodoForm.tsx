@@ -1,21 +1,26 @@
-import {Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField} from "@mui/material";
 import {type FC, type FormEvent, useState} from "react";
-import {useControlledTextField} from "../hooks/useControlledTextField.ts";
-import {useAddTodoMutation} from "../services/todos.ts";
-import {PriorityEnum} from "../types/todoResult.ts";
-import {useControlledSelectField} from "../hooks/useControlledSelectField.ts";
+import {Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField} from "@mui/material";
+import {PriorityEnum, type TodoPayload} from "../../types/todoResult.ts";
+import {useControlledTextField} from "../../hooks/useControlledTextField.ts";
+import {useControlledSelectField} from "../../hooks/useControlledSelectField.ts";
+import {TODO_LABELS} from "../../constants";
 
-export const AddingTodo: FC = () => {
-    const [title, onChangeTitle, onResetTitle] = useControlledTextField()
-    const [content, onChangeContent, onResetContent] = useControlledTextField()
-    const [priority, onChangePriority, onResetPriority] = useControlledSelectField(PriorityEnum.HIGH)
+type Props = {
+    titleAction: string
+    onTodoAction: (todo: TodoPayload) => void
+    isLoading: boolean
+    defaultTodo?: TodoPayload
+}
 
-    const [addTodo, {isLoading}] = useAddTodoMutation()
+export const TodoForm: FC<Props> = ({titleAction, onTodoAction, isLoading, defaultTodo}) => {
+    const [title, onChangeTitle, onResetTitle] = useControlledTextField(defaultTodo?.title)
+    const [content, onChangeContent, onResetContent] = useControlledTextField(defaultTodo?.content)
+    const [priority, onChangePriority, onResetPriority] = useControlledSelectField(defaultTodo?.priority ?? PriorityEnum.HIGH)
 
-    const [showErrors, setShowErrors] = useState(false)
     const isValid = title.trim() !== '' && content.trim() !== ''
+    const [showErrors, setShowErrors] = useState(false)
 
-    const onAddClick = (event: FormEvent<HTMLFormElement>) => {
+    const onSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.stopPropagation()
         event.preventDefault()
 
@@ -23,7 +28,7 @@ export const AddingTodo: FC = () => {
             setShowErrors(true)
             return
         }
-        addTodo({
+        onTodoAction({
             title: title.trim(),
             content: content.trim(),
             priority: priority
@@ -40,31 +45,31 @@ export const AddingTodo: FC = () => {
             sx={{alignItems: 'center', display: 'flex'}}
             spacing={2}
             component={"form"}
-            onSubmit={onAddClick}
+            onSubmit={onSubmit}
         >
             <TextField
-                label="Title"
+                label={TODO_LABELS.title}
                 value={title}
                 variant="outlined"
                 fullWidth={true}
                 onChange={onChangeTitle}
                 error={showErrors && title.trim() === ''}
-                helperText={showErrors && title.trim() === '' ? 'Title is needed' : ''}
+                helperText={showErrors && title.trim() === '' ? TODO_LABELS.titleNeeded : ''}
             />
             <TextField
-                label="Content"
+                label={TODO_LABELS.content}
                 value={content}
                 variant="outlined"
                 fullWidth={true}
                 onChange={onChangeContent}
                 error={showErrors && content.trim() === ''}
-                helperText={showErrors && content.trim() === '' ? 'Content is needed' : ''}
+                helperText={showErrors && content.trim() === '' ? TODO_LABELS.contentNeeded : ''}
             />
             <FormControl fullWidth={true}>
-                <InputLabel id={'priority'}>Priority</InputLabel>
+                <InputLabel id={'priority'}>{TODO_LABELS.priority}</InputLabel>
                 <Select
                     id={'priority'}
-                    label="Priority"
+                    label={TODO_LABELS.priority}
                     variant="outlined"
                     fullWidth={true}
                     onChange={onChangePriority}
@@ -84,10 +89,8 @@ export const AddingTodo: FC = () => {
                 loading={isLoading}
                 type={'submit'}
             >
-                Add
+                {titleAction}
             </Button>
         </Stack>
     )
 }
-
-export default AddingTodo;
