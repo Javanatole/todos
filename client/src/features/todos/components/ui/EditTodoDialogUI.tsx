@@ -1,7 +1,8 @@
-import type {FC, ReactNode} from "react";
+import type {FC} from "react";
 import {Button, Dialog, DialogContent, DialogTitle} from "@mui/material";
 import {TodoForm} from "./TodoForm.tsx";
 import type {TodoPayload, TodoResult} from "../../types/todoResult.ts";
+import {TODO_LABELS} from "../../constants";
 
 interface EditTodoDialogUIProps {
     open: boolean;
@@ -14,11 +15,11 @@ interface EditTodoDialogUIProps {
 export const EditTodoDialogUI: FC<EditTodoDialogUIProps> = ({ open, onClose, onSubmit, isLoading, todo }) => (
     <Dialog open={open} fullWidth={true} onClose={onClose}>
         <DialogTitle>
-            Edit your todo
+            {TODO_LABELS.editTitle}
         </DialogTitle>
         <DialogContent dividers>
             <TodoForm
-                titleAction={'Update'}
+                titleAction={TODO_LABELS.update}
                 onTodoAction={onSubmit}
                 isLoading={isLoading}
                 defaultTodo={todo}
@@ -31,8 +32,8 @@ export const EditTodoDialogUI: FC<EditTodoDialogUIProps> = ({ open, onClose, onS
                 sx={{ mt: 1 }}
                 onClick={onClose}
             >
-                {'Cancel'}
+                {TODO_LABELS.cancel}
             </Button>
         </DialogContent>
     </Dialog>
-); 
+);

@@ -4,6 +4,7 @@ import {useUpdateTodoMutation} from "../../services/todos.ts";
 import type {TodoPayload, TodoResult} from "../../types/todoResult.ts";
 import {useToggle} from "usehooks-ts";
 import {EditTodoDialogUI} from "../ui/EditTodoDialogUI.tsx";
+import {TODO_LABELS} from "../../constants";
 
 interface Props {
     todo: TodoResult;
@@ -27,7 +28,7 @@ export const EditTodoDialog: FC<Props> = ({ todo }) => {
     return (
         <>
             <Button onClick={toggle}>
-                Update
+                {TODO_LABELS.update}
             </Button>
             <EditTodoDialogUI
                 open={open}

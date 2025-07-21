@@ -3,6 +3,7 @@ import {Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField} fro
 import {PriorityEnum, type TodoPayload} from "../../types/todoResult.ts";
 import {useControlledTextField} from "../../hooks/useControlledTextField.ts";
 import {useControlledSelectField} from "../../hooks/useControlledSelectField.ts";
+import {TODO_LABELS} from "../../constants";
 
 type Props = {
     titleAction: string
@@ -47,28 +48,28 @@ export const TodoForm: FC<Props> = ({titleAction, onTodoAction, isLoading, defau
             onSubmit={onSubmit}
         >
             <TextField
-                label="Title"
+                label={TODO_LABELS.title}
                 value={title}
                 variant="outlined"
                 fullWidth={true}
                 onChange={onChangeTitle}
                 error={showErrors && title.trim() === ''}
-                helperText={showErrors && title.trim() === '' ? 'Title is needed' : ''}
+                helperText={showErrors && title.trim() === '' ? TODO_LABELS.titleNeeded : ''}
             />
             <TextField
-                label="Content"
+                label={TODO_LABELS.content}
                 value={content}
                 variant="outlined"
                 fullWidth={true}
                 onChange={onChangeContent}
                 error={showErrors && content.trim() === ''}
-                helperText={showErrors && content.trim() === '' ? 'Content is needed' : ''}
+                helperText={showErrors && content.trim() === '' ? TODO_LABELS.contentNeeded : ''}
             />
             <FormControl fullWidth={true}>
-                <InputLabel id={'priority'}>Priority</InputLabel>
+                <InputLabel id={'priority'}>{TODO_LABELS.priority}</InputLabel>
                 <Select
                     id={'priority'}
-                    label="Priority"
+                    label={TODO_LABELS.priority}
                     variant="outlined"
                     fullWidth={true}
                     onChange={onChangePriority}
